@@ -7,7 +7,7 @@
   "author": "Luiz Nunes",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --notify src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --notify src/server.ts",
     "start": "node ./",
     "build": "tsc -p ."
   },
