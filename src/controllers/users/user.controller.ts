@@ -98,7 +98,8 @@ export class UserController {
     try {
       res.status(this.httpStatusCode.OK).send('Route "/users" working OK!');  
     } catch (error) {
-        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+        const app_error = new Error(`Error testing Routes: ${error}`);
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);
     }
   }
 
@@ -109,7 +110,8 @@ export class UserController {
       const users = usersMock;
       res.status(this.httpStatusCode.OK).send(users);  
     } catch (error) {
-        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+      const app_error =new Error(`Error getting the list of users: ${error}`);
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);
     }
   }
 
@@ -123,7 +125,8 @@ export class UserController {
       } 
       res.status(this.httpStatusCode.OK).send(user);   
     } catch (error) {
-        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+      const app_error = new Error(`Error while getting user with id ${req.params.id}`);
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);
     }
   }
 
@@ -136,7 +139,8 @@ export class UserController {
       usersMock.push(user);
       res.status(this.httpStatusCode.CREATED).send(user);
     } catch (error) {
-        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+      const app_error =new Error(`Error creating user: ${error}`);
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);      
     }
   }
 
@@ -155,7 +159,8 @@ export class UserController {
       user.avatar = updatedUser.avatar;
       res.status(this.httpStatusCode.OK).send(user);
     } catch (error) {
-      res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+      const app_error = new Error(`Error updating user id: ${req.params.id}`)
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);      
     }
   }
 
@@ -171,7 +176,8 @@ export class UserController {
       usersMock.splice(index, 1);
       res.status(this.httpStatusCode.OK).send(`Delete user id: ${req.params.id}`);
     } catch (error) {
-      res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+      const app_error = new Error(`Error deleting user id: ${req.params.id}`);
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(app_error);      
     }
   }
 }
