@@ -95,59 +95,83 @@ export class UserController {
 
   public testRouteUsers = (req: Request, res: Response, next: NextFunction) =>
   {
-    res.send('Route "/users" working OK!');
+    try {
+      res.status(this.httpStatusCode.OK).send('Route "/users" working OK!');  
+    } catch (error) {
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+    }
   }
 
 
   public getAllUsers = (req: Request, res: Response, next: NextFunction) =>
   {
-    const users = usersMock;
-    res.status(this.httpStatusCode.OK).send(users);
+    try {
+      const users = usersMock;
+      res.status(this.httpStatusCode.OK).send(users);  
+    } catch (error) {
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+    }
   }
 
   public getUserById = (req: Request, res: Response, next: NextFunction) => 
   {
-    const userId = parseInt(req.params.id);
-    const user = usersMock.find(user => user.id === userId);
-    if (!user) {
-      res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
-    } 
-    res.status(this.httpStatusCode.OK).send(user);
+    try {
+      const userId = parseInt(req.params.id);
+      const user = usersMock.find(user => user.id === userId);
+      if (!user) {
+        res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
+      } 
+      res.status(this.httpStatusCode.OK).send(user);   
+    } catch (error) {
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);
+    }
   }
 
   public createUser = (req: Request, res: Response, next: NextFunction) => 
   {
-    const user = req.body;
-    console.log(user);
-    user.id = usersMock.length + 1;
-    usersMock.push(user);
-    res.send(user);
+    try {
+      const user = req.body;
+      console.log(user);
+      user.id = usersMock.length + 1;
+      usersMock.push(user);
+      res.status(this.httpStatusCode.CREATED).send(user);
+    } catch (error) {
+        res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+    }
   }
 
   public updateUser = (req: Request, res: Response, next: NextFunction) => 
   {
-    const userId = parseInt(req.params.id);
-    const user = usersMock.find(user => user.id === userId);
-    if (!user) {
-      res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
-    };
-    const updatedUser = req.body;
-    user.name = updatedUser.name;
-    user.username = updatedUser.username;
-    user.email = updatedUser.email;
-    user.avatar = updatedUser.avatar;
-    res.send(user);
+    try {
+      const userId = parseInt(req.params.id);
+      const user = usersMock.find(user => user.id === userId);
+      if (!user) {
+        res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
+      };
+      const updatedUser = req.body;
+      user.name = updatedUser.name;
+      user.username = updatedUser.username;
+      user.email = updatedUser.email;
+      user.avatar = updatedUser.avatar;
+      res.status(this.httpStatusCode.OK).send(user);
+    } catch (error) {
+      res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+    }
   }
 
   public deleteUser = (req: Request, res: Response, next: NextFunction) => 
   {
-    const userId = parseInt(req.params.id);
-    const user = usersMock.find(user => user.id === userId);
-    if (!user) {
-      res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
-    };
-    const index = usersMock.indexOf(user);
-    usersMock.splice(index, 1);
-    res.send(`Delete user id: ${req.params.id}`);
+    try {
+      const userId = parseInt(req.params.id);
+      const user = usersMock.find(user => user.id === userId);
+      if (!user) {
+        res.status(this.httpStatusCode.NOT_FOUND).send(`User with id ${userId} not found`);
+      }
+      const index = usersMock.indexOf(user);
+      usersMock.splice(index, 1);
+      res.status(this.httpStatusCode.OK).send(`Delete user id: ${req.params.id}`);
+    } catch (error) {
+      res.status(this.httpStatusCode.INTERNAL_SERVER_ERROR).send(error);      
+    }
   }
 }
