@@ -31,36 +31,21 @@ export class AuthController {
 
   public getToken = async (req: Request, res: Response, next: NextFunction) => {
    try {
-       if (!req.headers.authorization) {
-           return res.status(this.httpStatusCode.UNAUTHORIZED).send('Credenciais não informadas!');
-       } 
-        const [authType, token] = req.headers.authorization.split(' ');
-        if (authType !== 'Basic' || !token) {
-            return res.status(this.httpStatusCode.UNAUTHORIZED).send('Tipo de autenticação inválido');
-        }
-        const decodedToken = Buffer.from(token, 'base64').toString('utf-8');
-        const [username, password] = decodedToken.split(':');
+     const user = req.user
 
-        if (!username || !password) {
-            return res.status(this.httpStatusCode.UNAUTHORIZED).send('Credenciais inválidas!');
-        }
+     if (!user) throw new Error('Usuário não informado!!');
 
-        const user = await AuthRepository.getUserByUsernameAndPassword(username, password);
-       
-        if (!user) {
-          return res.status(this.httpStatusCode.UNAUTHORIZED).send('Acesso Negado!');
-          } else {
-          const jwtPayload = {username: user.username};
-          const jwtOptions = {
-            subject: user.uuid,
-            issuer: 'http://localhost:3000',
-            audience: 'http://localhost:3000',
-            expiresIn: '1h',
-          };
-          const jwtSecretKey = 'mySecret';
-          const jwtToken = JWT.sign(jwtPayload, jwtSecretKey, jwtOptions);
-          return res.status(this.httpStatusCode.OK).send(`Acesso Concedido! Token: ${jwtToken}`);
-        }
+      const jwtPayload = {username: user.username};
+      const jwtOptions = {
+        subject: user.uuid,
+        issuer: 'http://localhost:3000',
+        audience: 'http://localhost:3000',
+        expiresIn: '1h',
+      };
+      const jwtSecretKey = process.env.JWT_SECRET_KEY || 'mySecret';
+      const jwtToken = JWT.sign(jwtPayload, jwtSecretKey, jwtOptions);
+      return res.status(this.httpStatusCode.OK).send(`Acesso Concedido! Token: ${jwtToken}`);
+        
     }
     catch (error) {
        if(error instanceof DatabaseError) {
