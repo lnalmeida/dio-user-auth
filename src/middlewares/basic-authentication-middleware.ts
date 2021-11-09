@@ -9,10 +9,11 @@ const httpStatusCode = HttpStatusCode;
 export default async function basicAuthenticationMiddleware(req: Request, res: Response, next: NextFunction){
     try {
         
-        if (!req.headers.authorization) {
+        if (!req.headers['authorization']) {
             return res.status(httpStatusCode.UNAUTHORIZED).send('Credenciais não informadas!');
         } 
          const [authType, token] = req.headers.authorization.split(' ');
+         console.log(authType)
          if (authType !== 'Basic' || !token) {
              return res.status(httpStatusCode.UNAUTHORIZED).send('Tipo de autenticação inválido');
          }
