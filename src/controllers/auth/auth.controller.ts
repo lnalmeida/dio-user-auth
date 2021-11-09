@@ -47,18 +47,19 @@ export class AuthController {
 
         const user = await AuthRepository.getUserByUsernameAndPassword(username, password);
        
-        if (user) {
-            const token = JWT.sign({username: user.username}, {
-                sub: user.uuid,
-                iss: 'api.com',
-                aud: 'api.com',
-                exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                iat: Math.floor(Date.now() / 1000),
-                jti: user.uuid
-            }, 'secret');
-            return res.status(this.httpStatusCode.OK).send(`Acesso Concedido! Token: ${token}`);
+        if (!user) {
+          return res.status(this.httpStatusCode.UNAUTHORIZED).send('Acesso Negado!');
           } else {
-            return res.status(this.httpStatusCode.UNAUTHORIZED).send('Acesso Negado!');
+          const jwtPayload = {username: user.username};
+          const jwtOptions = {
+            subject: user.uuid,
+            issuer: 'http://localhost:3000',
+            audience: 'http://localhost:3000',
+            expiresIn: '1h',
+          };
+          const jwtSecretKey = 'mySecret';
+          const jwtToken = JWT.sign(jwtPayload, jwtSecretKey, jwtOptions);
+          return res.status(this.httpStatusCode.OK).send(`Acesso Concedido! Token: ${jwtToken}`);
         }
     }
     catch (error) {
