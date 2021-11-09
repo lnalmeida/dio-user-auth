@@ -1,6 +1,6 @@
-import  DatabaseError from '../../errors/databaseError';
-import User from '../../models/user.model';
-import db  from '../db';
+import  DatabaseError from '../errors/database.error';
+import User from '../models/user.model';
+import db  from '../database/db';
 
 class UserRepository {
     private db = db;
@@ -101,38 +101,8 @@ class UserRepository {
             }
         }
     }
+
 }
 
 export default new UserRepository();
 
-
-
-
-
-
-// async getUserByEmail(email: string): Promise<string> {
-//     const queryStr = `
-//         SELECT 1 
-//         FROM application_user 
-//         WHERE email = '$1';`
-//     const values = [email];
-//     const {rows} = await this.db.query(queryStr, values)
-//     if (rows.length > 0) {
-//         return "existe"
-//     }
-//     return "não existe"
-
-// }
-
-// async getUserByUsername(username: string): Promise<string> {
-//     const queryStr = `
-//         SELECT username 
-//         FROM application_user 
-//         WHERE username = '$1';`
-//     const values = [username];
-//     const {rows} = await this.db.query(queryStr, values);
-//     if (rows.length > 0) {
-//         return "exite"
-//     }
-//     return "não existe";
-// }

@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 
 import HttpStatusCode from '../../consts/HttpStatusCode';
-import UserRepository from '../../database/repositories/user.repository';
+import UserRepository from '../../repositories/user.repository';
 
 export class UserController {
   public path = '/users';
