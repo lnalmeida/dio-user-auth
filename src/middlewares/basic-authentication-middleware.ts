@@ -13,7 +13,6 @@ export default async function basicAuthenticationMiddleware(req: Request, res: R
             return res.status(httpStatusCode.UNAUTHORIZED).send('Credenciais não informadas!');
         } 
          const [authType, token] = req.headers.authorization.split(' ');
-         console.log(authType)
          if (authType !== 'Basic' || !token) {
              return res.status(httpStatusCode.UNAUTHORIZED).send('Tipo de autenticação inválido');
          }
