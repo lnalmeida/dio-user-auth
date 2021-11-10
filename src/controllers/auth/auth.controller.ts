@@ -40,7 +40,7 @@ export class AuthController {
         subject: user.uuid,
         issuer: 'http://localhost:3000',
         audience: 'http://localhost:3000',
-        expiresIn: '1h',
+        expiresIn: '5m',
       };
       const jwtSecretKey = process.env.JWT_SECRET_KEY || 'mySecret';
       const jwtToken = JWT.sign(jwtPayload, jwtSecretKey, jwtOptions);
