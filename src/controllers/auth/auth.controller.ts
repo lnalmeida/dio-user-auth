@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from 'express';
 
 import HttpStatusCode from '../../consts/HttpStatusCode';
 import DatabaseError from '../../errors/database.error';
-import AuthRepository from '../../repositories/auth.repository';
 import JWT from 'jsonwebtoken';
 
 
@@ -27,6 +26,7 @@ export class AuthController {
 
   public intializeRoutes() {
     this.router.post(this.path, this.getToken);
+    this.router.post(`${this.path}/validate`, this.validateToken);
   }
 
   public getToken = async (req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +59,10 @@ export class AuthController {
          })
        } 
     }
+  }
+
+  public validateToken = (req: Request, res: Response, next: NextFunction) => {
+    res.status(this.httpStatusCode.OK).send('Token validado com sucesso!');
   }
 }
 

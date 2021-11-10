@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import  {UserController} from '../controllers/users/user.controller';
+import jwtAuthenticationMiddleware from '../middlewares/jwt-authentication-middleware';
 
 const routes = Router();
 const userController = new UserController();
@@ -9,14 +10,14 @@ const userController = new UserController();
 routes.get("/users/status", userController.testRouteUsers);
 
 //rotas de usuários
-routes.get("/users", userController.getAllUsers);
+routes.get("/users", jwtAuthenticationMiddleware, userController.getAllUsers);
 
-routes.get("/users/:uuid", userController.getUserById);
+routes.get("/users/:uuid", jwtAuthenticationMiddleware, userController.getUserById);
 
-routes.post("/users", userController.createUser);
+routes.post("/users", jwtAuthenticationMiddleware, userController.createUser);
 
-routes.put("/users/:uuid", userController.updateUser);
+routes.put("/users/:uuid", jwtAuthenticationMiddleware, userController.updateUser);
 
-routes.delete("/users/:uuid", userController.deleteUser);
+routes.delete("/users/:uuid", jwtAuthenticationMiddleware, userController.deleteUser);
 
 export default routes;
